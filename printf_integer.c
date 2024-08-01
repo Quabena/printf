@@ -14,7 +14,8 @@ int original_value = value;
 int divisor = 1;
 int last_digit = value % 10;
 int char_count = 1;
-
+int temp_value;
+ 
 if (original_value < 0)
 {
 _putchar('-');
@@ -23,7 +24,7 @@ last_digit = -last_digit;
 char_count++;
 }
 
-int temp_value = original_value;
+temp_value = original_value;
 
 while (temp_value / 10 != 0)
 {

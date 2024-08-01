@@ -29,13 +29,13 @@ digits = malloc(char_count *sizeof(int));
 for (itrt = 0; itrt < char_count; itrt++)
 {
 digits[itrt] = temp % 16;
-temp /= 16
+temp /= 16;
 }
 
 for (itrt = char_count - 1; itrt >= 0; itrt--)
 {
 if (digits[itrt] > 9)
-{
+
 _putchar(digits[itrt] + 'a' - 10);
 
 else
