@@ -1,13 +1,13 @@
 #include "main.h"
 
 /**
-* print_reserve_str - prints a string a in reversed order
+* print_reverse_str - prints a string a in reversed order
 * @args: argument list
 * Return: number of characters printed
 * Printf project by Evans Adu and Enoch Kabange
 */
 
-int print_reserve_str(va_list args)
+int print_reverse_str(va_list args)
 {
 char *input_string = va_arg(args, char *);
 int index, count = 0;
