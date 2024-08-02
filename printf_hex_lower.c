@@ -4,7 +4,7 @@
 * print_hex_lower - Outputs an unsigned integer as a
 * lowercase hexadecimal string.
 * @args: Variable argument list containing the integer to convert
-* @format: Structure containing formatting flags (used for hash flag)
+* @format: Structure containing formatting flags
 * Return: The number of characters printed
 * Authors: Evans Adu and Enoch Kabange
 */
