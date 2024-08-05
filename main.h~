@@ -38,7 +38,7 @@ typedef struct format_specifier format_handler_t;
 int _printf(const char *format, ...);
 
 int dispatch_format(const char *format, int *index,
-		    va_list args, char output_buffer[],
+		    a_list args, char output_buffer[],
 		    int active_flags, int field_width, int precision_speci,
 		    int size_specifier);
 

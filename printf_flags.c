@@ -1,40 +1,29 @@
 #include "main.h"
-
 /**
-* apply_flags - Processes and sets formatting flags based on the
-* format specifier.
-* @specifier: The flag character found in the format string
-* @format: Pointer to the structure holding current flag settings
-* Return: 1 if a flag was set, 0 otherwise
-* Authors: Evans Adu and Enoch Kabange
-*/
+ * retrieve_flags - Determines active flags from the formatted string.
+ * @format: Formatted string to interpret.
+ * @position: Position within the formatted string.
+ * Return: Active Flags
+ */
 
-int apply_flags(char specifier, flag_settings *format)
+int retrieve_flags(const char *format, int *position)
 {
-	int flag_set = 0;
-
-	switch (specifier)
-	{
-	case '+':
-		format->plus = 1;
-		flag_set = 1;
-		break;
-	case ' ':
-		format->space = 1;
-		flag_set = 1;
-		break;
-	case '#':
-		format->hash = 1;
-		flag_set = 1;
-		break;
-	case '0':
-		format->zero = 1;
-		flag_set = 1;
-		break;
-	case '-':
-		format->negative = 1;
-		flag_set = 1;
-		break;
-	}
-	return (flag_set);
+    int index, current_position;
+    int active_flags = 0;
+    const char FLAGS_CHARAC[] = {'-', '+', '0', '#', ' ', '\0'};
+    const int FLAGS_VALUES[] = {MINUS_FLAG, PLUS_FLAG, ZERO_FLAG, HASH_FLAG, SPACE_FLAG,
+                             0};
+    for (current_position = *position + 1; format[current_position] != '\0'; current_position++)
+    {
+        for (index = 0; FLAGS_CHARAC[index] != '\0'; index++)
+            if (format[current_position] == FLAGS_CHARAC[index])
+            {
+                active_flags |= FLAGS_VALUES[index];
+                break;
+            }
+        if (FLAGS_CHARAC[index] == 0)
+            break;
+    }
+    *position = current_position - 1;
+    return (active_flags);
 }
