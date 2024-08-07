@@ -2,136 +2,69 @@
 #define MAIN_H
 
 #include <stdarg.h>
-#include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <limits.h>
 
-#define UNUSED(x) (void)(x)
-#define BUFF_SIZE 1024
+/* Macros for flags */
+#define FLAG_PLUS 1
+#define FLAG_SPACE 2
+#define FLAG_HASH 4
+#define FLAG_ZERO 8
+#define FLAG_MINUS 16
 
-#define MINUS_FLAG 1
-#define PLUS_FLAG 2
-#define ZERO_FLAG 4
-#define HASH_FLAG 8
-#define SPACE_FLAG 16
+/* Macros for length modifiers */
+#define LENGTH_SHORT 1
+#define LENGTH_LONG 2
 
-#define SIZE_LONG 2
-#define SIZE_SHORT 1
+/* Buffer size */
+#define BUFFER_SIZE 1024
 
-/**
-* format_specifier - Struct representing a
-* format specifier.
-*
-* @specifier: The format specifier character.
-* @handler: Pointer to the function handling this
-* format specifier.
-*/
-
-struct format_specifier
-{
-char specifier;
-int (*handler)(va_list, char[], int, int, int, int);
-};
-
-typedef struct format_specifier format_handler_t;
-
-
+/* Main printf function prototype */
 int _printf(const char *format, ...);
 
-int dispatch_format(const char *format, int *index,
-		    va_list args, char output_buffer[],
-		    int active_flags, int field_width, int precision_speci,
-		    int size_specifier);
+/* Function prototypes for handling conversion specifiers */
+int handle_conversion(char specifier, va_list args, int flags, int width,
+		      int precision, int length, char *buffer, int *buffer_index);
 
+/* Utility functions */
+int _putchar(char c, char *buffer, int *buffer_index);
+int _putstr(char *str, int width, int precision,
+	    char *buffer, int *buffer_index);
+int _putnum(long num, int base, int is_upper, int flags,
+	    int width, int precision, char *buffer, int *buffer_index);
+int _putunsigned(unsigned long num, int base, int is_upper, int flags,
+		 int width, int precision, char *buffer, int *buffer_index);
 
+/* Conversion specifier functions */
+int handle_c_specifier(va_list args, char *buffer, int *buffer_index);
+int handle_s_specifier(va_list args, char *buffer, int *buffer_index);
+int handle_percent_specifier(char *buffer, int *buffer_index);
+int handle_di_specifier(va_list args, char *buffer, int *buffer_index,
+			int width, int precision, int flags, int length_mod);
+int handle_b_specifier(va_list args, char *buffer,
+		       int *buffer_index, int width, int precision, int flags);
+int handle_uoxX_specifier(va_list args, char *buffer, int *buffer_index,
+			  int width, int precision, int flags, int length_mod, char specifier);
+int handle_S_specifier(va_list args, char *buffer, int *buffer_index,
+		       int width, int precision, int flags);
+int handle_p_specifier(va_list args, char *buffer, int *buffer_index,
+		       int width, int precision, int flags);
+int handle_r(va_list args, char *buffer, int *buffer_index, int width,
+	     int precision, int flags);
+int handle_R(va_list args, char *buffer, int *buffer_index,
+	     int width, int precision, int flags);
+int handle_c_s_percent(const char *specifier, va_list args, char *buffer,
+		       int *buffer_index, int width, int precision, int flags);
 
-int print_character(va_list args, char output_buffer[],
-		    int active_flags, int field_width,
-		    int precision_speci, int size_specifier);
+/* Helper functions */
+int handle_flags(const char **format, int *flags);
+int handle_width(const char **format, va_list args);
+int handle_precision(const char **format, va_list args);
+int handle_length(const char **format);
 
-int print_string(va_list args, char output_buffer[],
-		 int active_flags, int field_width,
-		 int precision_speci, int size_specifier);
-int print_percentage(va_list args, char output_buffer[],
-		     int active_flags, int field_width,
-		     int precision_speci, int size_specifier);
-
-int print_integer(va_list args, char output_buffer[],
-		  int active_flags, int field_width,
-		  int precision_speci, int size_specifier);
-
-int print_binary_format(va_list args, char output_buffer[], int active_flags,
-			int field_width, int precision_speci, int size_specifier);
-
-int print_unsigned_integer(va_list args, char output_buffer[],
-			   int active_flags, int field_width,
-			   int precision_speci, int size_specifier);
-
-int print_octal(va_list args, char output_buffer[], int active_flags,
-		int field_width, int precision_speci, int size_specifier);
-
-int print_hex(va_list args, char output_buffer[], int active_flags,
-	      int field_width, int precision_speci, int size_specifier);
-
-int print_hex_uppercase(va_list args, char output_buffer[], int active_flags,
-			int field_width, int precision_speci, int size_specifier);
-
-int print_hex_generic(va_list args, char map_to[], char output_buffer[],
-		      int active_flags, char flag_ch, int field_width,
-		      int precision_speci,
-		      int size_specifier);
-
-int print_non_printable_chars(va_list args, char output_buffer[],
-			      int active_flags, int field_width,
-			      int precision_speci, int size_specifier);
-
-int print_pointer(va_list args, char output_buffer[], int active_flags,
-		  int field_width, int precision_speci, int size_specifier);
-
-int retrieve_flags(const char *format, int *position);
-int retrieve_width(const char *format, int *i, va_list list);
-int retrieve_precision(const char *format, int *index, va_list args);
-int determine_size(const char *format, int *index);
-
-int print_reverse_string(va_list args, char output_buffer[],
-			 int active_flags,
-			 int field_width, int precision_speci, int size_specifier);
-
-int print_rot13_str(va_list args, char output_buffer[], int active_flags,
-		    int field_width,
-		    int precision_speci, int size_specifier);
-
-int handler_char_write(char c, char output_buffer[], int active_flags,
-		       int field_width,
-		       int precision_speci, int size_specifier);
-
-int handler_number_write(int neg_flag, int index, char output_buffer[],
-			 int active_flags,
-			 int field_width, int precision_speci, int size_specifier);
-
-int handler_generic_number(int index, char output_buffer[], int active_flags,
-			   int field_width,
-			   int precision_speci, int length, char padding_char,
-			   char holder);
-
-int pointer_address_handler(char output_buffer[], int index, int length,
-			    int field_width,
-			    int active_flags, char char_padding, char additional_char,
-			    int padding_start);
-
-int generic_unsigned_handler(int neg_num, int index, char output_buffer[],
-			     int active_flags,
-			     int field_width, int precision_speci, int size_specifier);
-
-int printable_char(char);
-
-int add_hex_code(char code_asc, char buffer[], int index);
-
-int is_numeric(char);
-
-long int convert_signed_size(long int num, int size_specifier);
-
-long int convert_unsigned_size(unsigned long int num, int size_specifier);
-
-void print_output_buffer(char output_buffer[], int *buffer_index);
+/* Buffer management */
+void flush_buffer(char *buffer, int *buffer_index);
 
 #endif /* MAIN_H */
